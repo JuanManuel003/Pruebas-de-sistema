@@ -1,0 +1,45 @@
+plugins {
+    id "net.serenity-bdd.serenity-gradle-plugin" version "3.5.0"
+    id 'eclipse'
+    id 'idea'
+}
+
+defaultTasks 'clean','test','aggregate'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    serenityVersion = '3.5.0'
+    serenityCucumberVersion = '3.5.0'
+    slf4jVersion = '2.0.6'
+}
+
+dependencies {
+    implementation group: 'net.serenity-bdd',       name: 'serenity-core',            version: "$rootProject.ext.serenityVersion"
+    implementation group: 'net.serenity-bdd',       name: 'serenity-cucumber',        version: "$rootProject.ext.serenityCucumberVersion"
+    implementation group: 'net.serenity-bdd',       name: 'serenity-screenplay',      version: "$rootProject.ext.serenityVersion"
+    implementation group: 'net.serenity-bdd',       name: 'serenity-screenplay-rest', version: "$rootProject.ext.serenityVersion"
+    implementation group: 'net.serenity-bdd',       name: 'serenity-ensure',          version: "$rootProject.ext.serenityVersion"
+    implementation group: 'net.serenity-bdd',       name: 'serenity-junit5',          version: "$rootProject.ext.serenityVersion"
+    implementation group: 'com.github.javafaker',   name: 'javafaker',                version: '1.0.2'
+    implementation group: 'org.json',               name:'json',                      version: '20220320'
+}
+
+test {
+    testLogging.showStandardStreams = true
+    useJUnit()
+}
+
+group 'co.com.uniquindio.edu.pruebas'
+version '1.0-SNAPSHOT'
+
+serenity {
+    reports = ["another-page-html"]
+}
+
+gradle.startParameter.continueOnFailure = true
+
+test.finalizedBy(aggregate)
+test.finalizedBy(reports)
